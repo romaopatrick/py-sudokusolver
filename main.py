@@ -1,5 +1,8 @@
-def main():
-    print("hello world!")
+from fastapi import FastAPI
 
-if __name__=='main':
-    main()
+from src.modules.sudoku.api import router as sudoku_router
+
+app = FastAPI()
+
+app.include_router(sudoku_router)
+
