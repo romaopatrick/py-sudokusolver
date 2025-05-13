@@ -34,14 +34,22 @@ class Sudoku:
 
     def solve(self):
         self.plot()
-        if not self._iterate():
-            self.plot()
-            raise ValueError("SOLVER BROKEN")
+        try:
+            if not self._iterate():
+                self.plot()
+                raise ValueError("SOLVER BROKEN")
 
-        if self.debug:
-            print(f"{sum(1 for n in self.current if n == 0)} to go! :)")
-            print(f"TOTAL ITERATIONS TO SOLVE: {self.iters_to_solve}")
-            self.plot()
+            if self.debug:
+                print(f"{sum(1 for n in self.current if n == 0)} to go! :)")
+                print(f"TOTAL ITERATIONS TO SOLVE: {self.iters_to_solve}")
+                self.plot()
+                
+        except ValueError:
+            raise ValueError("SOLVER BROKEN")
+        
+        except Exception:
+            raise ValueError("SOLVER BROKEN")    
+        
 
     def _is_safe_col(self, idx: int, candidate: int) -> bool:
         idx %= self.width
@@ -102,29 +110,28 @@ class Sudoku:
                         self.current[i] = 0
                 return False
 
-            if self.debug:
-                self.plot()
+
+        if self.debug:
+            self.plot()
 
         return True
 
 
 def plot_sudoku(board: list[int], output):
     if len(board) != 81:
-        raise ValueError("Input must be a list of 81 integers.")
+        raise ValueError('SOLVER BROKEN')
 
     grid = np.array(board).reshape((9, 9))
 
     _, ax = plt.subplots(figsize=(5, 5))
-    ax.matshow(np.ones_like(grid), cmap="gray", vmin=0, vmax=1)  # light background
+    ax.matshow(np.ones_like(grid), cmap="gray", vmin=0, vmax=1) 
 
-    # Draw numbers
     for i in range(9):
         for j in range(9):
             num = grid[i, j]
             if num != 0:
                 ax.text(j, i, str(num), va="center", ha="center", fontsize=14)
 
-    # Draw thicker lines every 3 blocks
     for i in range(10):
         lw = 2 if i % 3 == 0 else 0.5
         ax.axhline(i - 0.5, color="black", lw=lw)

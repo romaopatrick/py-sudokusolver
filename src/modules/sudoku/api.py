@@ -38,7 +38,7 @@ def solve_flatten(
     sudoku = service.solve(sudoku_str)
     return JSONResponse(
         content={
-            "solution": sudoku.flatten_string(),
+            'solution': sudoku.flatten_string(),
             'iterations': sudoku.iters_to_solve,
         },
         status_code=200,
