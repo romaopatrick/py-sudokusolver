@@ -63,18 +63,15 @@ def test_validate(
         ),
     ],
 )
-def test_solve(success, input_str, output, tmp_path, service: SudokuService = SudokuService()):
+def test_solve(success, input_str, output, service: SudokuService = SudokuService()):
     if not success:
         with pytest.raises(ValueError, match=str(output)):
             service._validate_sudoku(input_str)
     else:
-        result = service.solve(input_str)
+        result = service.solve(input_str).as_stream()
         
-        # For valid boards, check that the result is a file-like object
-        assert isinstance(result, io.StringIO), "The result should be a file-like object"
+        assert isinstance(result, io.BytesIO), "The result should be a file-like object"
         
-        # Optionally, you can check if the output file stream is empty or contains the expected content
-        result.seek(0)  # Move the cursor to the beginning of the file-like object
-        content = result.read()
-        assert content != '', f"Expected an empty file stream, but got: {content}"
-        assert len(result) > 0
+        result.seek(0)
+        content = str(result.read())
+        assert len(content) > 0

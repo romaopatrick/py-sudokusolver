@@ -2,7 +2,6 @@ import re
 
 from src.domain.errors.sudoku import SudokuErrors
 from ...domain.sudoku import Sudoku 
-import io
 
 class SudokuService:
     def _validate_sudoku(self, input: str) -> bool:
@@ -14,10 +13,10 @@ class SudokuService:
 
         return True
         
-    def solve(self, input: str) -> io.BytesIO:
+    def solve(self, input: str) -> Sudoku:
         self._validate_sudoku(input)
         
         sudoku = Sudoku(9, 9, 3, 3, list(map(int, list(input))), debug=False)
+        sudoku.solve()
         
-        return sudoku.as_stream()
-        
+        return sudoku
