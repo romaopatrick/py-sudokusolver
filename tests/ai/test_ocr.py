@@ -1,3 +1,4 @@
 def test_ocr():
     imgpath = 'sudoku.png'
     expected = '812753649943682175675491283154237896369845721287169534521974368438526917796318452'
+    print(imgpath, expected)
